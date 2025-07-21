@@ -1,0 +1,23 @@
+@import "tailwindcss";
+*::-webkit-scrollbar{
+    display:none
+}
+.hide-scrollbar::-webkit-scrollbar{
+    display:none
+}
+.masonry-column {
+  background-clip: padding-box;
+}
+
+.masonry-column > div {
+  margin-bottom: 1rem;
+}
+/* .react-tweet-theme {
+  position: relative;
+  z-index:-1;
+} */
+
+.scroll-container {
+  scrollbar-width: 0; /* Firefox */
+  
+}
