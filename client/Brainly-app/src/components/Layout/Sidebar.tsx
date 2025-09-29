@@ -1,12 +1,16 @@
 import BrainIcon from "../ui/icons/BrainIcon"
 import DocumentIcon from "../ui/icons/DocumentIcon"
-import HashTags from "../ui/icons/HashTags"
 import LinkIcon from "../ui/icons/LinkIcon"
 import VideoIcon from "../ui/icons/VideoIcon"
 import XIcon from "../ui/icons/Xicon"
 import SidebarItem from "./SidebarItem"
+import type {ContentItems} from '../MainContainer'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImages } from '@fortawesome/free-regular-svg-icons'
 
-const Sidebar = () => {
+const Sidebar = ({allContentData}:{
+  allContentData:ContentItems[]
+}) => {
   return (
 <div className="h-full w-fit ">
 
@@ -18,11 +22,11 @@ const Sidebar = () => {
   </div>
   <div className="sticky top-14">
     <div className="flex flex-col pt-4">
-      <SidebarItem image={<XIcon />} title="Tweets" />
-      <SidebarItem image={<VideoIcon />} title="Video" />
-      <SidebarItem image={<DocumentIcon />} title="Documents" />
-      <SidebarItem image={<LinkIcon />} title="Links" />
-      <SidebarItem image={<HashTags />} title="Tags" />
+      <SidebarItem image={<XIcon />} allContentData={allContentData}  title="Tweets" />
+      <SidebarItem image={<VideoIcon />} allContentData={allContentData}  title="Youtube" />
+      <SidebarItem image={<DocumentIcon />} allContentData={allContentData}  title="Documents" />
+      <SidebarItem image={<LinkIcon />} allContentData={allContentData} title="Links" />
+      <SidebarItem image={<FontAwesomeIcon icon={faImages} size="2x" />} allContentData={allContentData}  title="Image" />
     </div>
   </div>
 </div>

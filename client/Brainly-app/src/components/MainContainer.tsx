@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {useEffect, useState } from "react";
 import Card from "./Layout/Card"
 import Button from "./ui/Button"
@@ -44,10 +45,13 @@ const MainContainer = () => {
 
   const user=useSelector((state:RootState)=>state.user)
   const ContentDataState=useSelector((state:RootState)=>state.contentDataState)
+  const contentData=useSelector((state:RootState)=>state.content)
 
   const [isSidebarMobile,setIsSidebarMobile]=useState(false)
 
-  const [contentData, setContentData] = useState<ContentItems[]>([]);
+  // const [contentData, setContentData] = useState<ContentItems[]>([]);
+  const [allContentData, setAllContentData] = useState<ContentItems[]>([]);
+
 
   const getShareData=async()=>{
     const response= await axios.get("http://localhost:3000/api/v1/user/brain/share",{
@@ -55,7 +59,7 @@ const MainContainer = () => {
         authorization:jwt
       }
     })
-    if(response.data.data.hash){
+    if(response?.data?.data?.hash){
       setIsBrainShared(true)
     }
   }
@@ -106,7 +110,8 @@ const MainContainer = () => {
         const allTags=tags.data.tags
         dispatch(setTags(allTags))
         const data=response.data?.Response
-        setContentData(data)
+        console.log(data)
+        setAllContentData(data)
         dispatch(setContent(data))
     } catch (error) {
       console.error(error)
@@ -120,6 +125,7 @@ const MainContainer = () => {
   useEffect(()=>{
     if(jwt&&user){
       getContentData()
+      console.log(contentData)
       getShareData()
     }
   },[jwt,isModelOpen,ContentDataState])
@@ -143,11 +149,11 @@ const MainContainer = () => {
           <BrainIcon/>
         </div>
         <div className='bg-gray-100 xl:w-fit w-22 md:pr-12  min-h-screen hidden sm:block '>
-          <Sidebar/>
+          <Sidebar allContentData={allContentData} />
         </div>
         <div className="flex-1 w-11/12">
           <div className="sm:mt-14 mt-18  mx-4 flex  ml-12 items-center justify-between ">
-              <p className="md:text-4xl text-xl font-bold">All Notes</p>
+              <p className="md:text-4xl text-xl font-bold">All Cells</p>
               <div className="flex">
                 <Button varients="secondary" size='lg' text={`${isBrainShared?'Stop Sharing':'Share Brain'}`} startIcon={isBrainShared?<StopIcon/>:<ShareIcon size="lg"/>} 
                 onClick={()=>{
@@ -162,7 +168,7 @@ const MainContainer = () => {
               </div>
             </div>
             <div className="flex md:hidden items-center flex-col">
-              {contentData && contentData.map((x) => {
+              {contentData && contentData.map((x:ContentItems) => {
                 return(
                   <Card key={x._id} title={x.title} type={x.type} tags={x.tags} link={x.link} text={x.text} timestamps={x.updatedAt} id={x._id} />
                 )
@@ -176,7 +182,7 @@ const MainContainer = () => {
                 columnClassName="masonry-column"
                 >
                 
-              {contentData && contentData.map((x) => {
+              {contentData && contentData.map((x:ContentItems) => {
                 return(
                   <Card key={x._id} title={x.title} type={x.type} tags={x.tags} link={x.link} text={x.text} timestamps={x.updatedAt} id={x._id} />
                 )

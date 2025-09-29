@@ -5,9 +5,10 @@ const ContentSlice=createSlice({
     initialState:[],
     reducers:{
         setContent:(state,action)=>action.payload,
+        clearContent:()=>[]
     }
 })
 
-export const {setContent}=ContentSlice.actions
+export const {setContent,clearContent}=ContentSlice.actions
 
 export default ContentSlice.reducer
