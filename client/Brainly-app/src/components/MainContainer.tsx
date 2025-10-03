@@ -176,12 +176,13 @@ const MainContainer = () => {
             </div>
 
             <div className="items-center md:block hidden " >
+              {!contentData && <div className="text-2xl text-purple-700 "> Lets create some cells </div>}
               <Masonry 
                 breakpointCols={breakpointColumnsObj}
                 className="flex gap-1 px-2 mt-12 w-11/12  "
                 columnClassName="masonry-column"
                 >
-                
+              
               {contentData && contentData.map((x:ContentItems) => {
                 return(
                   <Card key={x._id} title={x.title} type={x.type} tags={x.tags} link={x.link} text={x.text} timestamps={x.updatedAt} id={x._id} />

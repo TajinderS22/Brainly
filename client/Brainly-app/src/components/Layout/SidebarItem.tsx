@@ -4,17 +4,10 @@ import type { ContentItems } from '../MainContainer'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
 import { clearSelected, setSelected } from '../../store/Selected'
-import { clearContent, setContent } from '../../store/ContentSlice'
+import { setContent } from '../../store/ContentSlice'
 
-interface SidebarItemContents{
-    title: string,
-    image: ReactElement,
-    setIsSidebarMobile?:boolean,
-    isSidebarMobile?:boolean
 
-}
-
-const SidebarItem = ({image,title,allContentData,setIsSidebarMobile,
+const SidebarItem = ({image,title,allContentData,
     isSidebarMobile}:{
   image:ReactElement,allContentData:ContentItems[],title:string,setIsSidebarMobile?:boolean,
     isSidebarMobile?:boolean
