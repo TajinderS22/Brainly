@@ -4,7 +4,7 @@ const ContentDataStateSlice=createSlice({
     name:"contentDataState",
     initialState:false,
     reducers:{
-        setContentDataState:(state,action)=>action.payload,
+        setContentDataState:(_state,action)=>action.payload,
     }
 })
 

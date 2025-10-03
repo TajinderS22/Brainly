@@ -4,7 +4,7 @@ const tagsSlice=createSlice({
     name:'tags',
     initialState:[],
     reducers:{
-        setTags:(state,action)=>action.payload,
+        setTags:(_state,action)=>action.payload,
         clearTags:()=>[]
     }
 })
