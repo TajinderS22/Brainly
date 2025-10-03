@@ -58,7 +58,7 @@ const Authentication = () => {
                     email,
                     password                    
                 }
-                const response= await axios.post("http://localhost:3000/api/v1/user/signin",data)
+                const response= await axios.post(BACKEND_URL+":3000/api/v1/user/signin",data)
                 localStorage.setItem('jwt',response.data.token)
                 navigate('/dashboard')
             }else{
@@ -70,7 +70,7 @@ const Authentication = () => {
                     password,
                     userName
                 }
-                const response= await axios.post("http://localhost:3000/api/v1/user/signup",data)
+                const response= await axios.post(BACKEND_URL+":3000/api/v1/user/signup",data)
                 if(response.status==200){
                     alert("User Registered")
                     navigate('/dashboard')
