@@ -15,7 +15,7 @@ import StopIcon from "./ui/icons/StopIcon";
 import { setContent } from "../store/ContentSlice";
 import BrainIcon from "./ui/icons/BrainIcon";
 import MobileSidebar from "./Layout/MobileSidebar";
-import { BACKEND_URL } from "../utils/Backend";
+import { BACKEND_URL, frontEndUrl } from "../utils/Backend";
 
 
 const breakpointColumnsObj = {
@@ -92,7 +92,7 @@ const MainContainer = () => {
           })
           setIsBrainShared(true)
           alert(response.data.message)
-          const shareableLink=BACKEND_URL+":5173"+response.data.link
+          const shareableLink=frontEndUrl+"/"+response.data.link
           await navigator.clipboard.writeText(shareableLink)
 
         }
