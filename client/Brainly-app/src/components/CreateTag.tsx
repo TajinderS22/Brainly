@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux"
 import { setTags } from "../store/tagsSlice"
 import type { RootState } from "../store/store"
+import { BACKEND_URL } from "../utils/Backend"
 // import XrossIcon from "./ui/icons/XrossIcon"
 
 // type Tag = {
@@ -27,7 +28,7 @@ const CreateTag = ({setIsCreateTagOpen,setAreTagsUpdated,areTagsUpdated}:{setIsC
             title:createTagValue,
             color:randomColors[randomColorSelector()]
         };
-        const response= await axios.post("http://localhost:3000/api/v1/user/tags",data)
+        const response= await axios.post(BACKEND_URL+":3000/api/v1/user/tags",data)
         setAreTagsUpdated(!areTagsUpdated)
         console.log(response.data)
         dispatch(setTags([...tags,response.data.response]))

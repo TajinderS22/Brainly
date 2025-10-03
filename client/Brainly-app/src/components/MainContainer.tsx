@@ -55,7 +55,7 @@ const MainContainer = () => {
 
 
   const getShareData=async()=>{
-    const response= await axios.get("http://localhost:3000/api/v1/user/brain/share",{
+    const response= await axios.get(BACKEND_URL+":3000/api/v1/user/brain/share",{
       headers:{
         authorization:jwt
       }
@@ -70,7 +70,7 @@ const MainContainer = () => {
     try {
       if (jwt) {
         if(isBrainShared){
-         const response = await axios.post("http://localhost:3000/api/v1/user/brain/share",{
+         const response = await axios.post(BACKEND_URL+":3000/api/v1/user/brain/share",{
             share:false
           },{
             headers:{
@@ -83,7 +83,7 @@ const MainContainer = () => {
           navigator.clipboard.writeText('')
 
         }else{
-         const response = await axios.post("http://localhost:3000/api/v1/user/brain/share",{
+         const response = await axios.post(BACKEND_URL+":3000/api/v1/user/brain/share",{
             share:true
           },{
             headers:{
@@ -92,7 +92,7 @@ const MainContainer = () => {
           })
           setIsBrainShared(true)
           alert(response.data.message)
-          const shareableLink="http://localhost:5173"+response.data.link
+          const shareableLink=BACKEND_URL+":5173"+response.data.link
           navigator.clipboard.writeText(shareableLink)
 
         }

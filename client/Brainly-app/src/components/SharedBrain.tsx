@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setTags } from '../store/tagsSlice';
+import { BACKEND_URL } from '../utils/Backend';
 
 
 
