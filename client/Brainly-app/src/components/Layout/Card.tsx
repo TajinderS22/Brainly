@@ -108,7 +108,7 @@ const Card = ({title,type,link,text,timestamps,tags,id}:CardProps) => {
    try {
     
      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-     const response = await axios.delete('http://localhost:3000/api/v1/user/content', {
+     const _response = await axios.delete('http://localhost:3000/api/v1/user/content', {
         data: { contentId },
         headers: {
           authorization: jwt
