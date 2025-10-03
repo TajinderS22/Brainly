@@ -11,6 +11,7 @@ import type { RootState } from "../../store/store";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { setContentDataState } from "../../store/ContentDataStateSlice";
+import { BACKEND_URL } from "../../utils/Backend";
 
 
 interface CardProps{
@@ -107,7 +108,7 @@ const Card = ({title,type,link,text,timestamps,tags,id}:CardProps) => {
   const handleContentDeleteClick=async(contentId:string)=>{
    try {
     
-     const response = await axios.delete('http://localhost:3000/api/v1/user/content', {
+     const response = await axios.delete( BACKEND_URL+':3000/api/v1/user/content', {
         data: { contentId },
         headers: {
           authorization: jwt

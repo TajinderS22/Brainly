@@ -15,6 +15,7 @@ import StopIcon from "./ui/icons/StopIcon";
 import { setContent } from "../store/ContentSlice";
 import BrainIcon from "./ui/icons/BrainIcon";
 import MobileSidebar from "./Layout/MobileSidebar";
+import { BACKEND_URL } from "../utils/Backend";
 
 
 const breakpointColumnsObj = {
@@ -103,10 +104,10 @@ const MainContainer = () => {
 
   const getContentData=async()=>{
     try {
-        const response=await axios.get('http://localhost:3000/api/v1/user/content',{
+        const response=await axios.get( BACKEND_URL+':3000/api/v1/user/content',{
           headers:{authorization:jwt}
         })
-        const tags=await axios.get('http://localhost:3000/api/v1/user/tags')
+        const tags=await axios.get( BACKEND_URL+':3000/api/v1/user/tags')
         const allTags=tags.data.tags
         dispatch(setTags(allTags))
         const data=response.data?.Response

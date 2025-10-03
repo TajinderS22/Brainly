@@ -14,7 +14,7 @@ const userMiddleware = (req, res, next) => {
         return;
     }
     try {
-        const decodedId = jsonwebtoken_1.default.verify(token, process.env.JWT_USER_PASSWORD);
+        const decodedId = jsonwebtoken_1.default.verify(token,  JWT_USER_PASSWORD);
         if (decodedId) {
             req.userId = decodedId.id;
         }

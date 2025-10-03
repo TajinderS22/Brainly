@@ -3,6 +3,7 @@ import Button from "../ui/Button"
 // import BrainIcon from "../ui/icons/BrainIcon"
 import axios from "axios"
 import { useNavigate } from "react-router"
+import { BACKEND_URL } from "../../utils/Backend"
 
 const Authentication = () => {
 
@@ -19,7 +20,7 @@ const Authentication = () => {
         
         try {
 
-          const response=await axios.post('http://localhost:3000/api/v1/user/authenticate-user',{},{
+          const response=await axios.post( BACKEND_URL+':3000/api/v1/user/authenticate-user',{},{
           headers:{
             authorization:jwt
           }

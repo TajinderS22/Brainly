@@ -32,7 +32,7 @@ const SharedBrain = () => {
     const getContentData=async()=>{
         try {
           const response= await axios.get(`http://localhost:3000/api/v1/user/brain/share/${hash}`)
-          const tags=await axios.get('http://localhost:3000/api/v1/user/tags')
+          const tags=await axios.get( BACKEND_URL+':3000/api/v1/user/tags')
           const allTags=tags.data.tags
           dispatch (setTags(allTags))
           setContentData(response.data.content)

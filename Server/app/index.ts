@@ -20,7 +20,7 @@ app.use('/api/v1/user',userRouter)
 
 
 const Main=async ()=>{    
-    await mongoose.connect(process.env.MONGO_DB_URL+'BrinlyApp')
+    await mongoose.connect( MONGO_DB_URL+'BrinlyApp')
     
 
     app.listen(port,()=>{

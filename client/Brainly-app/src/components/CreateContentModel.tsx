@@ -8,6 +8,7 @@ import type mongoose from "mongoose";
 import { useDispatch } from "react-redux";
 // import type { RootState } from "../store/store";
 import { setTags } from "../store/tagsSlice";
+import { BACKEND_URL } from "../utils/Backend";
 
 type IsModelOpenTypes={
     setIsModelOpen:(open:boolean)=>void
@@ -74,7 +75,7 @@ const CreateContentModel = ({setIsModelOpen}:IsModelOpenTypes) => {
 
         }
 
-        const response= await axios.post('http://localhost:3000/api/v1/user/content',data,{
+        const response= await axios.post( BACKEND_URL+':3000/api/v1/user/content',data,{
             headers:{
                 authorization: jwt
             }

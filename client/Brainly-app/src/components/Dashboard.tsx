@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../store/userSlice'
 import type { RootState } from '../store/store'
 import { useNavigate } from 'react-router'
+import { BACKEND_URL } from '../utils/Backend'
 
 
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
       
       try {
 
-        const response=await axios.post('http://localhost:3000/api/v1/user/authenticate-user',{},{
+        const response=await axios.post( BACKEND_URL+':3000/api/v1/user/authenticate-user',{},{
         headers:{
           authorization:jwt
         }
