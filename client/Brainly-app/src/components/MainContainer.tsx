@@ -55,7 +55,7 @@ const MainContainer = () => {
 
 
   const getShareData=async()=>{
-    const response= await axios.get(BACKEND_URL+":3000/api/v1/user/brain/share",{
+    const response= await axios.get(BACKEND_URL+"/api/v1/user/brain/share",{
       headers:{
         authorization:jwt
       }
@@ -70,7 +70,7 @@ const MainContainer = () => {
     try {
       if (jwt) {
         if(isBrainShared){
-         const response = await axios.post(BACKEND_URL+":3000/api/v1/user/brain/share",{
+         const response = await axios.post(BACKEND_URL+"/api/v1/user/brain/share",{
             share:false
           },{
             headers:{
@@ -83,7 +83,7 @@ const MainContainer = () => {
           navigator.clipboard.writeText('')
 
         }else{
-         const response = await axios.post(BACKEND_URL+":3000/api/v1/user/brain/share",{
+         const response = await axios.post(BACKEND_URL+"/api/v1/user/brain/share",{
             share:true
           },{
             headers:{
@@ -104,10 +104,10 @@ const MainContainer = () => {
 
   const getContentData=async()=>{
     try {
-        const response=await axios.get( BACKEND_URL+':3000/api/v1/user/content',{
+        const response=await axios.get( BACKEND_URL+'/api/v1/user/content',{
           headers:{authorization:jwt}
         })
-        const tags=await axios.get( BACKEND_URL+':3000/api/v1/user/tags')
+        const tags=await axios.get( BACKEND_URL+'/api/v1/user/tags')
         const allTags=tags.data.tags
         dispatch(setTags(allTags))
         const data=response.data?.Response
