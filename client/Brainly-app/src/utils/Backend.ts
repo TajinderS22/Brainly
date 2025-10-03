@@ -1,1 +1,1 @@
-export const BACKEND_URL='api.brainly.tajinder.xyz'
+export const BACKEND_URL='http://api.brainly.tajinder.xyz'

@@ -21,7 +21,7 @@ const Dashboard = () => {
       
       try {
 
-        const response=await axios.post( BACKEND_URL+'/api/v1/user/authenticate-user',{},{
+        const response=await axios.post( BACKEND_URL+':3000/api/v1/user/authenticate-user',{},{
         headers:{
           authorization:jwt
         }
