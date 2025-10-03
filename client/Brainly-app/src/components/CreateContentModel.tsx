@@ -37,7 +37,7 @@ const CreateContentModel = ({setIsModelOpen}:IsModelOpenTypes) => {
     useEffect(()=>{
         const fetchTags = async () => {
             try {
-                const response = await axios.get(BACKEND_URL+":3000/api/v1/user/tags");   
+                const response = await axios.get(BACKEND_URL+"/api/v1/user/tags");   
                 setTagsFromServer( [... (response.data.tags )]);
             } catch (error) {
                 console.error("Failed to fetch tags:", error);
@@ -75,7 +75,7 @@ const CreateContentModel = ({setIsModelOpen}:IsModelOpenTypes) => {
 
         }
 
-        const response= await axios.post( BACKEND_URL+':3000/api/v1/user/content',data,{
+        const response= await axios.post( BACKEND_URL+'/api/v1/user/content',data,{
             headers:{
                 authorization: jwt
             }

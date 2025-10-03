@@ -108,7 +108,7 @@ const Card = ({title,type,link,text,timestamps,tags,id}:CardProps) => {
   const handleContentDeleteClick=async(contentId:string)=>{
    try {
     
-     const response = await axios.delete( BACKEND_URL+':3000/api/v1/user/content', {
+     const response = await axios.delete( BACKEND_URL+'/api/v1/user/content', {
         data: { contentId },
         headers: {
           authorization: jwt

@@ -28,7 +28,7 @@ const CreateTag = ({setIsCreateTagOpen,setAreTagsUpdated,areTagsUpdated}:{setIsC
             title:createTagValue,
             color:randomColors[randomColorSelector()]
         };
-        const response= await axios.post(BACKEND_URL+":3000/api/v1/user/tags",data)
+        const response= await axios.post(BACKEND_URL+"/api/v1/user/tags",data)
         setAreTagsUpdated(!areTagsUpdated)
         console.log(response.data)
         dispatch(setTags([...tags,response.data.response]))
