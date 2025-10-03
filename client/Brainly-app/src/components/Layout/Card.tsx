@@ -107,15 +107,16 @@ const Card = ({title,type,link,text,timestamps,tags,id}:CardProps) => {
   const handleContentDeleteClick=async(contentId:string)=>{
    try {
     
-     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-     const _response = await axios.delete('http://localhost:3000/api/v1/user/content', {
+     const response = await axios.delete('http://localhost:3000/api/v1/user/content', {
         data: { contentId },
         headers: {
           authorization: jwt
         }
       })
+
       
     dispatch(setContentDataState(!ContentDataState))
+    return response
 
    } catch (error) {
     console.log(error)

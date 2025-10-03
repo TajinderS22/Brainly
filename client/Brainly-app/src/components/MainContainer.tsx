@@ -139,7 +139,7 @@ const MainContainer = () => {
       }
       {isSidebarMobile&&
         <div className="h-full  " >
-          <MobileSidebar isSidebarMobile={isSidebarMobile} setIsSidebarMobile={setIsSidebarMobile} />
+          <MobileSidebar isSidebarMobile={isSidebarMobile} allContentData={allContentData} setIsSidebarMobile={setIsSidebarMobile} />
         </div>
       }
       <div className="flex">
