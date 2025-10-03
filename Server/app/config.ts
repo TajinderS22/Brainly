@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const jwtSecret =  JWT_USER_PASSWORD;
+const jwtSecret =  process.env.JWT_USER_PASSWORD;
 
 if (!jwtSecret) {
   throw new Error('❌ JWT_USER_PASSWORD is not set in your .env file');
