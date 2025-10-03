@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faImages } from '@fortawesome/free-regular-svg-icons'
 
 
-interface MobileSidebarProps{
+type MobileSidebarProps={
   setIsSidebarMobile: React.Dispatch<React.SetStateAction<boolean>>,
   isSidebarMobile:boolean
   allContentData:ContentItems[]
