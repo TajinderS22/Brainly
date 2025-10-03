@@ -93,7 +93,7 @@ const MainContainer = () => {
           setIsBrainShared(true)
           alert(response.data.message)
           const shareableLink=BACKEND_URL+":5173"+response.data.link
-          navigator.clipboard.writeText(shareableLink)
+          await navigator.clipboard.writeText(shareableLink)
 
         }
       }
