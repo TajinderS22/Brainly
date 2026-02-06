@@ -14,7 +14,8 @@ export default defineConfig({
   server: {
     host: true, // listen on 0.0.0.0 so nginx/proxy can reach it
     allowedHosts: [
-      'brainly.tajinder.xyz'
+      'brainly.tajinder.xyz',
+      "brainly.tajinder.in"
     ],
     port: 4000 // optional: fix your dev port
   }

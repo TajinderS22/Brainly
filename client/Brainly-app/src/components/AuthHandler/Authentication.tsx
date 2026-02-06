@@ -43,7 +43,7 @@ const Authentication = () => {
         if(jwt){
             isSessionActive()
         }
-    })
+    },[])
 
     const userNameRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
