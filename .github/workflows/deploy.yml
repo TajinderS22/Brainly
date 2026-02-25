@@ -68,7 +68,7 @@ jobs:
             npm i --verbose
             npm run build
             cd ..
-            cd client
+            cd client/Brainly-app
             npm i --verbose
             npm run build
 
