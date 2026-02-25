@@ -9,18 +9,7 @@ import NotFound from './components/NotFound'
 import Home from './components/Home'
 
 function App() {
-
-  return (
-   <div className='min-h-screen h-fit max-w-[1920px] mx-auto  '>
-      <Provider store={store} >
-        <RouterProvider router={routes}/>  
-      </Provider>    
-    
-   </div>
-  )
-}
-
-const routes=createBrowserRouter([
+  const routes=createBrowserRouter([
   {
     path:'/dashboard',
     element:<Dashboard/>
@@ -43,5 +32,17 @@ const routes=createBrowserRouter([
     element:<NotFound/> 
   }
 ])
+
+  return (
+   <div className='min-h-screen h-fit max-w-[1920px] mx-auto  '>
+      <Provider store={store} >
+        <RouterProvider router={routes}/>  
+      </Provider>    
+    
+   </div>
+  )
+}
+
+
 
 export default App
