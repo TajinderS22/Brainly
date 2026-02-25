@@ -61,13 +61,15 @@ jobs:
             git pull origin main
 
             echo '--- Installing dependencies ---'
-            npm install
+            
 
             echo '--- Building the app ---'
             cd Server
+            npm i --verbose
             npm run build
             cd ..
             cd client
+            npm i --verbose
             npm run build
 
             echo '--- Restarting app ---'
