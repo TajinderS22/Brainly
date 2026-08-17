@@ -6,4 +6,7 @@ node_modules/
 dist/
 build
 
+.commandcode/
+docs
+
 aws-conf.conf

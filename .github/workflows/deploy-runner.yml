@@ -1,0 +1,342 @@
+  name: Deploy on Prod
+
+  on:
+    push:
+      branches:
+        - tunnel
+
+  jobs:
+    build-and-deploy:
+      runs-on: ubuntu-latest
+
+      steps:
+
+        # ============================================================
+        # Checkout repository
+        # ============================================================
+        - name: Checkout repo
+          uses: actions/checkout@v4
+
+
+        # ============================================================
+        # Setup Node.js
+        # ============================================================
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 24
+            cache: npm
+
+        # ============================================================
+        # Install client dependencies
+        # ============================================================
+        - name: Install client dependencies
+          working-directory: client/Brainly-app
+          run: |
+            npm install
+
+
+        # ============================================================
+        # Build React application
+        # ============================================================
+        - name: Build React app
+          working-directory: client/Brainly-app
+          run: |
+            npm run build
+
+        # ============================================================
+        # Install Server Dependencies
+        # ============================================================
+        - name: Install Server deps
+          working-directory: Server
+          run: |
+            npm i
+
+        # ============================================================
+        # Build Server 
+        # ============================================================
+        - name: Build Server 
+          working-directory: Server
+          run: |
+            npm audit fix 
+            npm run build
+
+
+        # ============================================================
+        # Create complete deployment archive
+        #
+        # Includes:
+        #   .git
+        #   .github
+        #   source code
+        #   node_modules
+        #   build files
+        #   package files
+        #   everything else in repository
+        #
+        # GitHub runner does not contain production .env,
+        # so production .env will NOT be overwritten.
+        # ============================================================
+        - name: Create deployment archive
+          run: |
+            echo "========================================"
+            echo "Creating deployment archive"
+            echo "========================================"
+
+            tar \
+              --exclude='./deploy.tar.gz' \
+              -czf /tmp/Brainly-deploy.tar.gz \
+              .
+
+
+        # ============================================================
+        # Check archive
+        # ============================================================
+        - name: Check deployment package
+          run: |
+            echo "========================================"
+            echo "Deployment package"
+            echo "========================================"
+
+            ls -lh /tmp/Brainly-deploy.tar.gz
+
+
+        # ============================================================
+        # Setup SSH
+        # ============================================================
+        - name: Setup SSH
+          env:
+            HOST: ${{ secrets.PROD_HOST }}
+            USER: ${{ secrets.PROD_USER }}
+            KEY: ${{ secrets.PROD_SSH_KEY }}
+
+          run: |
+            echo "$KEY" > key.pem
+            chmod 600 key.pem
+
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+
+            cat >> ~/.ssh/config <<EOF
+            Host prod
+              HostName $HOST
+              User $USER
+              IdentityFile $(pwd)/key.pem
+              StrictHostKeyChecking no
+            EOF
+
+
+        # ============================================================
+        # Upload deployment package
+        # ============================================================
+        - name: Upload deployment package
+          run: |
+            scp \
+              /tmp/Brainly-deploy.tar.gz \
+              prod:/tmp/Brainly-deploy.tar.gz
+
+
+        # ============================================================
+        # Deploy on VM
+        # ============================================================
+        - name: Deploy on VM
+          run: |
+            ssh prod <<'EOF'
+
+              set -e
+
+              APP_DIR="/home/ubuntu/Brainly"
+              ENV_FILE="$APP_DIR/Server/.env"
+              ENV_BACKUP="/tmp/Brainly-server.env"
+
+
+              echo "========================================"
+              echo "Starting deployment"
+              echo "========================================"
+
+
+              # ========================================================
+              # Create application directory if it doesn't exist
+              # ========================================================
+              mkdir -p "$APP_DIR"
+
+
+              # ========================================================
+              # Backup production Server/.env
+              # ========================================================
+              echo "========================================"
+              echo "Preserving Server/.env"
+              echo "========================================"
+
+              if [ -f "$ENV_FILE" ]; then
+                cp "$ENV_FILE" "$ENV_BACKUP"
+                echo "Server/.env backed up."
+              else
+                echo "WARNING: Server/.env does not exist."
+              fi
+
+
+              # ========================================================
+              # Remove old application
+              #
+              # Everything is deleted.
+              # Server/.env is restored afterward.
+              # ========================================================
+              echo "========================================"
+              echo "Removing old application"
+              echo "========================================"
+
+              find "$APP_DIR" \
+                -mindepth 1 \
+                -maxdepth 1 \
+                -exec rm -rf {} +
+
+
+              # ========================================================
+              # Extract new deployment
+              # ========================================================
+              echo "========================================"
+              echo "Extracting new deployment"
+              echo "========================================"
+
+              tar \
+                -xzf /tmp/Brainly-deploy.tar.gz \
+                -C "$APP_DIR"
+
+
+              # ========================================================
+              # Remove uploaded archive
+              # ========================================================
+              rm -f /tmp/Brainly-deploy.tar.gz
+
+
+              # ========================================================
+              # Restore production Server/.env
+              # ========================================================
+              echo "========================================"
+              echo "Restoring production Server/.env"
+              echo "========================================"
+
+              if [ -f "$ENV_BACKUP" ]; then
+
+                mkdir -p "$APP_DIR/Server"
+
+                cp \
+                  "$ENV_BACKUP" \
+                  "$APP_DIR/Server/.env"
+
+                rm -f "$ENV_BACKUP"
+
+                echo "Server/.env restored."
+
+              else
+
+                echo "WARNING: No production Server/.env was found."
+
+              fi
+
+
+              # ========================================================
+              # Enter application directory
+              # ========================================================
+              cd "$APP_DIR"
+
+
+              # ========================================================
+              # Setup Node / NVM
+              # ========================================================
+              echo "========================================"
+              echo "Setting up Node environment"
+              echo "========================================"
+
+              export NVM_DIR="$HOME/.nvm"
+
+              if [ -s "$NVM_DIR/nvm.sh" ]; then
+                source "$NVM_DIR/nvm.sh"
+              fi
+
+              export PATH="$(npm prefix -g)/bin:$PATH"
+
+              echo "Node:"
+              node -v
+
+              echo "NPM:"
+              npm -v
+
+              echo "PM2:"
+              which pm2
+              pm2 -v
+
+
+              # ========================================================
+              # Verify deployment
+              # ========================================================
+              echo "========================================"
+              echo "Verifying deployment"
+              echo "========================================"
+
+              echo ""
+              echo "Repository:"
+              du -sh .
+
+              echo ""
+              echo "Root node_modules:"
+              if [ -d "node_modules" ]; then
+                du -sh node_modules
+              else
+                echo "node_modules not found"
+              fi
+
+              echo ""
+              echo "Client:"
+              if [ -d "client/Brainly-app" ]; then
+                du -sh client/Brainly-app
+              fi
+
+              echo ""
+              echo "Client build:"
+              if [ -d "client/Brainly-app/dist" ]; then
+                du -sh client/Brainly-app/dist
+              elif [ -d "client/Brainly-app/build" ]; then
+                du -sh client/Brainly-app/build
+              else
+                echo "Build directory not found"
+              fi
+
+              echo ""
+              echo "Server .env:"
+              if [ -f "Server/.env" ]; then
+                echo "Server/.env exists"
+              else
+                echo "WARNING: Server/.env does not exist"
+              fi
+
+
+              # ========================================================
+              # Restart PM2
+              # ========================================================
+              echo "========================================"
+              echo "Restarting PM2"
+              echo "========================================"
+
+              pm2 restart all --update-env
+
+
+              # ========================================================
+              # PM2 status
+              # ========================================================
+              echo "========================================"
+              echo "PM2 status"
+              echo "========================================"
+
+              pm2 status
+
+
+              # ========================================================
+              # Deployment complete
+              # ========================================================
+              echo "========================================"
+              echo "Deployment complete!"
+              echo "========================================"
+
+            EOF
